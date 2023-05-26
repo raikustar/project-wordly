@@ -2,4 +2,5 @@
 A clone of Wordle in unity with C#
 
 
-Poor man's wordle version
+Poor man's wordle
+
