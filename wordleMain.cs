@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class wordleMain : MonoBehaviour
 {
@@ -10,9 +11,8 @@ public class wordleMain : MonoBehaviour
     string word;
     public string guessWord;
 
-
     // try for loop in input logic
-    string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+    //string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
     public rowScript[] row = new rowScript[6];
     public keyBoardLayout keyBoard; 
@@ -37,7 +37,6 @@ public class wordleMain : MonoBehaviour
         goToNewRow();
         keyBoardInput();
         unCheckedCompareWords();
-
     }
 
     void compareWords()
@@ -135,9 +134,7 @@ public class wordleMain : MonoBehaviour
 
     string keyBoardInput()
     {
-
-        
-        // this seems unbearably stupid logic, google time
+        // this seems unbearably stupid, has to be a better solution
         string n;
         // also for loop??
         if (Input.GetKeyDown(KeyCode.A))
@@ -310,4 +307,34 @@ public class wordleMain : MonoBehaviour
     //    cor = false;
     //}
 
+    public void keyPress(string s)
+    {
+        string u = guessWord + s;
+        guessWord = u;
+    }
+
+    // Delete function for on screen keyboard
+    public void delPress()
+    {
+        string s = guessWord.Remove(guessWord.Length - 1);
+        guessWord = s;
+        row[startRow].buttons[guessWord.Length].text = string.Empty;
+    }
+
+    // Enter function for on screen keyboard
+    public void enterPress()
+    {
+        if(guessWord.Length == 5)
+        {
+            compareWords();
+            guessWord = string.Empty;
+            rowNum();
+
+        }
+    }
+
+    public void refreshGame()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

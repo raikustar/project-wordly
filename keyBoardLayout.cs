@@ -7,5 +7,4 @@ using TMPro;
 public class keyBoardLayout : MonoBehaviour
 {
     public Button[] btn = new Button[25];
-
 }
