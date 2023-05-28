@@ -11,11 +11,7 @@ public class wordleMain : MonoBehaviour
     string word;
     public string guessWord;
 
-    // try for loop in input logic
-    //string[] alphabet = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-
     public rowScript[] row = new rowScript[6];
-    public keyBoardLayout keyBoard; 
     Color my_Green = new Color(0.3f, 0.8f, 0.5f, 1);
     Color my_Default = new Color(0.8f, 0.8f, 0.8f, 1f);
     Color my_Yellow = new Color(1f, 0.9f, 0.4f, 1f);
@@ -24,16 +20,17 @@ public class wordleMain : MonoBehaviour
     int maxAttempt = 6;
     int startRow = 0;
     int newRow;
-    bool gameEnd, cor;
+    bool gameEnd;
+    IEnumerator cor;
 
     private void Start()
     {
         gameEnd = false;
-        cor = false;
         word = wordList[rng()];
     }
     void Update()
     {
+        
         goToNewRow();
         keyBoardInput();
         unCheckedCompareWords();
@@ -57,7 +54,7 @@ public class wordleMain : MonoBehaviour
             row[startRow].buttons[i].text = "" + guessWord[i];
         }
     }
-
+    
     // Check if int i = word string array in for loop
     void checkLetterPos(int i)
     {
@@ -299,14 +296,7 @@ public class wordleMain : MonoBehaviour
 
     // Effect for box resize after letter input
 
-    //public IEnumerator boxEffect(int i)
-    //{
-    //    row[startRow].blocks[i].transform.localScale = new Vector2(1.1f,1.1f);
-    //    yield return new WaitForSeconds(2f);
-    //    row[startRow].blocks[i].transform.localScale = new Vector2(1f, 1f);
-    //    cor = false;
-    //}
-
+    // On screen keyboard input
     public void keyPress(string s)
     {
         string u = guessWord + s;
@@ -333,6 +323,7 @@ public class wordleMain : MonoBehaviour
         }
     }
 
+    // Reload scene
     public void refreshGame()
     {
         SceneManager.LoadScene(0);
