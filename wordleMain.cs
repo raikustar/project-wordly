@@ -7,9 +7,12 @@ using UnityEngine.SceneManagement;
 
 public class wordleMain : MonoBehaviour
 {
-    string[] wordList = { "abuse", "above", "abyss", "acres", "acorn", "adapt", "bless", "blood", "blush", "board", "bogey", "brawl", "bravo"};
+    
     string word;
     public string guessWord;
+    public TextMeshProUGUI showWord;
+
+    public wordList wordlist;
 
     public rowScript[] row = new rowScript[6];
     Color my_Green = new Color(0.3f, 0.8f, 0.5f, 1);
@@ -20,20 +23,31 @@ public class wordleMain : MonoBehaviour
     int maxAttempt = 6;
     int startRow = 0;
     int newRow;
-    bool gameEnd;
+    bool gameEnd, stopGame;
     IEnumerator cor;
+
+
+
+
+    // if word is guessed before last row, stop input
 
     private void Start()
     {
         gameEnd = false;
-        word = wordList[rng()];
+        word = wordlist.realWord();
+        showWord.enabled = false;
     }
     void Update()
     {
         
+        showSecretWord();
         goToNewRow();
         keyBoardInput();
         unCheckedCompareWords();
+        Debug.Log(word);
+
+        
+        
     }
 
     void compareWords()
@@ -74,25 +88,20 @@ public class wordleMain : MonoBehaviour
     void goToNewRow()
     {
         // string length and input
-        if (guessWord.Length == 5 && Input.GetKeyDown(KeyCode.Return))  
-        {            
+
+        if (Input.GetKeyDown(KeyCode.Return) && guessWord == word)
+        {
+            compareWords();
+
+        } else if (Input.GetKeyDown(KeyCode.Return) && guessWord.Length == 5)
+        {
             compareWords();
             rowNum();
             attemptNum();
             guessWord = "";
         } 
-        else if (currentAttempt == maxAttempt)
-        {
-            gameOver();
-            Debug.Log("Game Over!");
-        }
-        else if (gameOverCheck() == true && Input.GetKey(KeyCode.Return))
-        {
-            gameOver();
-            Debug.Log("Correct Guess!");
-        }
-        
     }
+
 
     // Increase Row Number when word is guessed
     int rowNum()
@@ -101,6 +110,7 @@ public class wordleMain : MonoBehaviour
         startRow = newRow;
         return startRow;
     }
+    
 
     // Increase attempt Number when word is guessed
     int attemptNum()
@@ -110,25 +120,29 @@ public class wordleMain : MonoBehaviour
         return s;
     }
 
-    void gameOver()
-    {
-        gameEnd = true;
-        currentAttempt = 6;
+    // print word after failing to guess it
 
-        // lock game screen and set refresh button
-    }
-
-    bool gameOverCheck()
+    void showSecretWord()
     {
-        if(guessWord == word)
+        if((Input.GetKeyDown(KeyCode.Return) && startRow == 5) && guessWord != word)
         {
-            return true;
-        } else
-        {
-            return false;
+            // print actual word somewhere on the screen
+            // TMPRO
+            showWord.enabled = true;
+            showWord.text = "Correct word: " + word;
         }
     }
 
+
+    int forceStartRow()
+    {
+        
+        Debug.Log("Does this work???");
+        int s = startRow + 10;
+        startRow = s;
+        return startRow;
+        
+    }
     string keyBoardInput()
     {
         // this seems unbearably stupid, has to be a better solution
@@ -288,11 +302,7 @@ public class wordleMain : MonoBehaviour
         }
     }
 
-    int rng()
-    {
-        int s = Random.Range(0, wordList.Length);
-        return s;
-    }
+    
 
     // Effect for box resize after letter input
 
@@ -328,4 +338,5 @@ public class wordleMain : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
 }
