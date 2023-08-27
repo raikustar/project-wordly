@@ -2,7 +2,7 @@
 A clone of Wordle in unity with C#
 
 
-Poor man's wordle
+Basic wordle clone
 
 ![alt text](https://cdn.discordapp.com/attachments/1052531978160840704/1112384263791333507/image.png)
 
