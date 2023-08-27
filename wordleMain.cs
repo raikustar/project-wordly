@@ -11,6 +11,7 @@ public class wordleMain : MonoBehaviour
     string word;
     public string guessWord;
     public TextMeshProUGUI showWord;
+    public Button delButton;
 
     public wordList wordlist;
 
@@ -23,8 +24,6 @@ public class wordleMain : MonoBehaviour
     int maxAttempt = 6;
     int startRow = 0;
     int newRow;
-    bool gameEnd, stopGame;
-    IEnumerator cor;
 
 
 
@@ -33,21 +32,16 @@ public class wordleMain : MonoBehaviour
 
     private void Start()
     {
-        gameEnd = false;
+        delButton.interactable = true;
         word = wordlist.realWord();
         showWord.enabled = false;
     }
     void Update()
     {
-        
         showSecretWord();
         goToNewRow();
         keyBoardInput();
-        unCheckedCompareWords();
-        Debug.Log(word);
-
-        
-        
+        unCheckedCompareWords();  
     }
 
     void compareWords()
@@ -92,6 +86,7 @@ public class wordleMain : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && guessWord == word)
         {
             compareWords();
+            delButton.interactable = false;
 
         } else if (Input.GetKeyDown(KeyCode.Return) && guessWord.Length == 5)
         {
@@ -134,15 +129,6 @@ public class wordleMain : MonoBehaviour
     }
 
 
-    int forceStartRow()
-    {
-        
-        Debug.Log("Does this work???");
-        int s = startRow + 10;
-        startRow = s;
-        return startRow;
-        
-    }
     string keyBoardInput()
     {
         // this seems unbearably stupid, has to be a better solution
